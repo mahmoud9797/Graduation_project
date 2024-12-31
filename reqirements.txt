@@ -1,0 +1,9 @@
+django
+djangorestframework
+pillow>=8.0
+python-dotenv>=0.19.0
+mysqlclient
+django-cors-headers>=3.10
+python-decouple>=3.6
+djangorestframework-simplejwt
+django-cors-headers
