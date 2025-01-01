@@ -64,6 +64,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'E_commerce.wsgi.application'
 
+AUTH_USER_MODEL = 'accounts.User'
+
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
