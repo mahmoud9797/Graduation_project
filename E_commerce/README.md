@@ -1,1 +1,1 @@
-# Graduation_project
+this is a django project of
