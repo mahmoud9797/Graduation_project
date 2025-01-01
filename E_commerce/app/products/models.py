@@ -83,7 +83,7 @@ class Products(models.Model):
     description = models.TextField(null=True)
     price = models.DecimalField(max_length=12, max_digits=15, decimal_places=2, null=False)
     stock = models.PositiveIntegerField(null=False)
-    category_id = models.ForeignKey(
+    category = models.ForeignKey(
         Categories, 
         null=False, 
         related_name='products',
