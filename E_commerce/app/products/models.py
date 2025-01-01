@@ -81,9 +81,13 @@ class Products(models.Model):
     name = models.CharField(max_length=255, null=False)
     slug = models.SlugField(unique=True, null=False)
     description = models.TextField(null=True)
+<<<<<<< HEAD
+    price = models.DecimalField(max_length=12, max_digits=15, decimal_places=2, null=False)
+=======
     price = models.DecimalField(max_digits=12, decimal_places=2, null=False)
+>>>>>>> origin/main
     stock = models.PositiveIntegerField(null=False)
-    category_id = models.ForeignKey(
+    category = models.ForeignKey(
         Categories, 
         null=False, 
         related_name='products',
