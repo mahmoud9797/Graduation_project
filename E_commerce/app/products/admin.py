@@ -11,3 +11,29 @@ class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     readonly_fields = ("created_at", "updated_at")
 
+    fieldsets = ((None, {"fields":("name", "slug", "description", "image")}),
+                 ("Timestamps",{"fields":("created_at", "updated_at"),
+                                "classes":("collapse")
+                                })
+                 
+                 )
+    
+    @admin.register(Products)
+    class ProductAdmin(admin.ModelAdmin):
+        list_display = ("name", "slug", "category", "price", "stock", "is_active", "created_at")
+        list_filter = ("is_active", "category", "created_at")
+        search_fields = ("name", "description")
+        prepopulated_fields = {"slug":("name",)}
+        readonly_fields = ("created_at", "updated_at")
+        list_editable = ("price", "stock", "is_active")
+
+        fieldsets = ((None, {"fields":("name", "slug", "description")}),
+                     ("product Detials",{"fields":("category", "price", "stock", "image", "is_active")}),
+                     ("Timestamps",{"fields":("created_at", "updated_at")
+                     ,"classes" : ("collapse",)
+                     }),
+
+                     )
+
+    
+
