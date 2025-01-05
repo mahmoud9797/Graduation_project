@@ -18,6 +18,7 @@ class Categories(models.Model):
     """
 
     id = models.PositiveIntegerField(primary_key=True, null=False)
+    image = models.ImageField(upload_to="categories/", blank=True, null=True)
     name = models.CharField(max_length=255, null=False)
     slug = models.SlugField(null=False, unique=True, blank=True)
     description = models.TextField(null=True)
@@ -89,7 +90,7 @@ class Products(models.Model):
         related_name='products',
         on_delete=models.CASCADE
     )
-    image = models.ImageField(upload_to='products-images/', blank=True, null=True)
+    image = models.ImageField(upload_to='products', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
