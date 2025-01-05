@@ -30,8 +30,10 @@ INSTALLED_APPS = [
     'app.products.apps.ProductsConfig',
     'app.accounts.apps.AccountsConfig',
     'app.orders.apps.OrdersConfig',
-    'app.reviews.apps.ReviewsConfig'
-
+    'app.reviews.apps.ReviewsConfig',
+    'django_filters',
+    'rest_framework',
+    'app',
 ]
 
 MIDDLEWARE = [
