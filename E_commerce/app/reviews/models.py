@@ -16,7 +16,7 @@ class Reviews(models.Model):
     id = models.BigAutoField(null=False, primary_key=True)
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='reviews', null=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews', null=False)
-    rating = models.IntegerField(choices=RATING_CHOICES)
+    rating = models.IntegerField(choices=RATING_CHOICES, default=1)
     comment = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
