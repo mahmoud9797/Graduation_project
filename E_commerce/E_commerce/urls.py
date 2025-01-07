@@ -16,9 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from app.accounts.views import UserViewSet , CustomTokenObtainPairView
+from rest_framework_simplejwt.views import TokenRefreshView
+
+router = DefaultRouter()
+router.register("accounts", UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('app.products.urls')),
     path('api/', include('app.reviews.urls')),
+    path('api/', include(router.urls))
 ]

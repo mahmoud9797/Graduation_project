@@ -1,6 +1,7 @@
 
 from decouple import config
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,6 +35,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'app',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +103,30 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication', 
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # Require authentication for all requests
+
+    ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # Set access token lifetime
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # Set refresh token lifetime
+    'ROTATE_REFRESH_TOKENS': True,                   # Rotate refresh tokens
+    'BLACKLIST_AFTER_ROTATION': True,                 # Blacklist old refresh tokens
+    'ALGORITHM': 'HS256',                            # Algorithm used to encode the token
+    'SIGNING_KEY': SECRET_KEY,                       # Use your secret key
+    'USER_ID_FIELD': 'id',                           # Specify user id field
+    'USER_ID_CLAIM': 'user_id',                      # Claim for user id
+    'AUTH_HEADER_TYPES': ('Bearer',),                # Header types
+}
 
 
 # Internationalization
