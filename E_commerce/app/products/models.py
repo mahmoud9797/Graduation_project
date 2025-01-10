@@ -1,6 +1,7 @@
 """product models for categories and products in the api"""
 from django.db import models
 from django.utils.text import slugify
+from app.accounts.models import User
 # Create your models here.
 
 
@@ -17,7 +18,7 @@ class Categories(models.Model):
         updated_at (DateTimeField): The date and time the category was last updated (auto-generated).
     """
 
-    id = models.PositiveIntegerField(primary_key=True, null=False)
+    id = models.AutoField(primary_key=True)
     image = models.ImageField(upload_to="categories/", blank=True, null=True)
     name = models.CharField(max_length=255, null=False)
     slug = models.SlugField(null=False, unique=True, blank=True)
@@ -79,9 +80,10 @@ class Products(models.Model):
     """
 
     id = models.AutoField(primary_key=True, null=False)
+    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE, related_name='product_creator')
     name = models.CharField(max_length=255, null=False)
     slug = models.SlugField(unique=True, null=False)
-    description = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=15, decimal_places=2, null=False)
     stock = models.PositiveIntegerField(null=False, default=0)
     category = models.ForeignKey(
@@ -90,7 +92,7 @@ class Products(models.Model):
         related_name='products',
         on_delete=models.CASCADE
     )
-    image = models.ImageField(upload_to='products/', blank=True, null=True)
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
@@ -136,6 +138,6 @@ class Products(models.Model):
             verbose_name_plural (str): The human-readable name of the model in plural form.
         """
 
-        ordering = ['-created_at']
+        ordering = ['-created_at',]
         verbose_name = "Product"
         verbose_name_plural = "Products"

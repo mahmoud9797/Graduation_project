@@ -1,12 +1,21 @@
-from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework import generics, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.exceptions import NotFound
+from rest_framework.decorators import action
 
 from .filters import ProductFilter
 from .models import Products, Categories
 from app.reviews.models import Reviews
 from .serializers import ProductSerializer, CategorySerializer
 from app.reviews.serializers import ReviewSerializer
+
+  
+class CategoryCreateListAPIView(generics.ListCreateAPIView):
+    queryset = Categories.objects.all()
+    serializer_class = CategorySerializer
+
+categories_list = CategoryCreateListAPIView.as_view()
 
 
 class CategoryListAPIView(generics.ListAPIView):
@@ -15,13 +24,15 @@ class CategoryListAPIView(generics.ListAPIView):
     def get_queryset(self):
         slug = self.kwargs.get('slug')
         try:
-            Category = Categories.objects.get(slug=slug)
+            category = Categories.objects.get(slug=slug)
         except Categories.DoesNotExist:
             raise NotFound(f"this category {slug} nas not been added")
-        
-        return Products.objects.filter(Category=Category)
+
+        return Products.objects.filter(category=category)
 
 Categories_list_view = CategoryListAPIView.as_view()
+
+
 class ProductListAPIView(generics.ListAPIView):
     queryset = Products.objects.all()
     serializer_class = ProductSerializer
@@ -30,9 +41,10 @@ class ProductListAPIView(generics.ListAPIView):
 
 product_list_view = ProductListAPIView.as_view()
 
+
 class ProductReviewListAPIView(generics.ListAPIView):
     serializer_class = ReviewSerializer
-    
+
     def get_queryset(self):
         slug = self.kwargs.get('slug')
         try:
