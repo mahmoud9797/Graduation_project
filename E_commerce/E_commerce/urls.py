@@ -17,6 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+# from app.products.views import (
+#     CategoriesViewSet,
+#     ProductReviewViewSet,
+#     ProductViewSet,
+# )
 from app.accounts.views import UserViewSet , CustomTokenObtainPairView
 from rest_framework_simplejwt.views import TokenRefreshView
 from app.orders.views import OrderViewSet
@@ -26,6 +31,8 @@ from django.conf.urls.static import static
 router = DefaultRouter()
 router.register("accounts", UserViewSet)
 router.register("orders", OrderViewSet, basename="order")
+# router.register('products', ProductViewSet, basename='products')
+# router.register('categories', CategoriesViewSet, basename='categories')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -37,5 +44,6 @@ urlpatterns = [
     # JWT Authentication
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
