@@ -40,7 +40,6 @@ urlpatterns = [
     path('api/', include('app.reviews.urls')),
     path('api/', include(router.urls)),
 
-
     # JWT Authentication
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
