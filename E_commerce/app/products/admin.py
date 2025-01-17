@@ -34,6 +34,3 @@ class CategoryAdmin(admin.ModelAdmin):
                      }),
 
                      )
-
-    
-

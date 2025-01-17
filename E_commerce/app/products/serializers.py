@@ -5,7 +5,7 @@ from .models import Products, Categories
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Categories
-        feilds = '__all__'
+        fields = '__all__'
 
         read_only_fields = ('id', 'created_at', 'updated_at')
 

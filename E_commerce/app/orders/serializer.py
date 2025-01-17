@@ -65,10 +65,3 @@ class OrderCreateSerializer(serializers.ModelSerializer):
             )
 
         return order
-
-    
-      
-
-
-
-
