@@ -1,10 +1,9 @@
-from django.shortcuts import render
-
-#apps/orders/views.py
+# orders/views.py
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from django.db import transaction
 from .models import Order
 from .serializer import OrderSerializer, OrderCreateSerializer
 
@@ -20,6 +19,25 @@ class OrderViewSet(viewsets.ModelViewSet):
             return OrderCreateSerializer
         return OrderSerializer
 
+    @transaction.atomic
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(
+            data=request.data,
+            context={'request': request}
+        )
+        serializer.is_valid(raise_exception=True)
+        try:
+            order = serializer.save()
+            return Response(
+                OrderSerializer(order).data,
+                status=status.HTTP_201_CREATED
+            )
+        except Exception as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
     @action(detail=True, methods=['post'])
     def cancel(self, request, pk=None):
         order = self.get_object()
@@ -31,8 +49,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         
         order.status = 'cancelled'
         order.save()
-        serializer = OrderSerializer(order)
-        return Response(serializer.data)
+        return Response(OrderSerializer(order).data)
 
     @action(detail=False, methods=['get'])
     def pending(self, request):
