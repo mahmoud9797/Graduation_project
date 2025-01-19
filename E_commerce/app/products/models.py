@@ -2,8 +2,10 @@
 from django.db import models
 from django.utils.text import slugify
 from app.accounts.models import User
+from django.contrib.auth import get_user_model
 # Create your models here.
 
+User = get_user_model()
 
 class Categories(models.Model):
     """
@@ -79,8 +81,10 @@ class Products(models.Model):
         updated_at (DateTimeField): The date and time the product was last updated (auto-generated).
     """
 
+    
+
     id = models.AutoField(primary_key=True, null=False)
-    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE, related_name='product_creator')
+    user = models.ForeignKey(User, default=User.objects.get(is_superuser=True).id ,on_delete=models.CASCADE, related_name='product_creator')
     name = models.CharField(max_length=255, null=False)
     slug = models.SlugField(unique=True, null=False)
     description = models.TextField(null=True, blank=True)
