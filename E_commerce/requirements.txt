@@ -13,8 +13,10 @@ inflection==0.5.1
 isort==5.13.2
 jsonschema==4.23.0
 jsonschema-specifications==2024.10.1
+Markdown==3.7
 mysqlclient==2.2.6
 pillow==11.0.0
+Pygments==2.19.1
 PyJWT==2.10.1
 python-decouple==3.8
 python-dotenv==1.0.1
