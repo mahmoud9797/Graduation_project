@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MerchFlow API</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>MerchFlow API Documentation</h1>
+        <p class="description">{{ description }}</p>
+        <h2>Explore Endpoints</h2>
+        <ul class="endpoint-list">
+            {% for endpoint in endpoints %}
+            <li><a href="{{ endpoint.url }}" target="_blank">{{ endpoint.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

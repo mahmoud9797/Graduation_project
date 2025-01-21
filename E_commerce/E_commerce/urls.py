@@ -38,6 +38,7 @@ router.register("orders", OrderViewSet, basename="order")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('home.urls')),
     path('api/', include('app.products.urls')),
     path('api/', include('app.reviews.urls')),
     path('api/', include(router.urls)),

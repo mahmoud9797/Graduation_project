@@ -45,7 +45,10 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs["new_password"] != attrs["new_password"]:
             return serializers.ValidationError({"password": "password fields didn't match."})
-        
+    class Meta:
+        model = User
+        fields = ['old_password', 'new_password', 'new_password2']
+    
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
