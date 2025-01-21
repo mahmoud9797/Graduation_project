@@ -13,6 +13,8 @@ import os
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
@@ -33,6 +35,7 @@ INSTALLED_APPS = [
     'app.accounts.apps.AccountsConfig',
     'app.orders.apps.OrdersConfig',
     'app.reviews.apps.ReviewsConfig',
+    'home.apps.HomeConfig',
     'django_filters',
     'rest_framework',
     'app',
@@ -55,7 +58,9 @@ ROOT_URLCONF = 'E_commerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

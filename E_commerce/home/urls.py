@@ -1,0 +1,7 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),  # Home page route
+    path("docs/", views.documentation, name="documentation"),
+]

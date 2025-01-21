@@ -6,6 +6,7 @@ paths:
   /api/accounts/:
     get:
       operationId: accounts_list
+      description: ViewSet for handling user operations.
       tags:
       - accounts
       security:
@@ -23,6 +24,7 @@ paths:
           description: ''
     post:
       operationId: accounts_create
+      description: ViewSet for handling user operations.
       tags:
       - accounts
       requestBody:
@@ -52,6 +54,7 @@ paths:
   /api/accounts/{id}/:
     get:
       operationId: accounts_retrieve
+      description: ViewSet for handling user operations.
       parameters:
       - in: path
         name: id
@@ -74,6 +77,7 @@ paths:
           description: ''
     put:
       operationId: accounts_update
+      description: ViewSet for handling user operations.
       parameters:
       - in: path
         name: id
@@ -108,6 +112,7 @@ paths:
           description: ''
     patch:
       operationId: accounts_partial_update
+      description: ViewSet for handling user operations.
       parameters:
       - in: path
         name: id
@@ -141,6 +146,7 @@ paths:
           description: ''
     delete:
       operationId: accounts_destroy
+      description: ViewSet for handling user operations.
       parameters:
       - in: path
         name: id
@@ -157,29 +163,23 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/accounts/{id}/change_password/:
+  /api/accounts/change_password/:
     post:
       operationId: accounts_change_password_create
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this user.
-        required: true
+      description: ViewSet for handling user operations.
       tags:
       - accounts
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/ChangePassword'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/ChangePassword'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/ChangePassword'
         required: true
       security:
       - jwtAuth: []
@@ -190,11 +190,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/ChangePassword'
           description: ''
   /api/accounts/me/:
     get:
       operationId: accounts_me_retrieve
+      description: ViewSet for handling user operations.
       tags:
       - accounts
       security:
@@ -211,6 +212,7 @@ paths:
   /api/accounts/update_profile/:
     put:
       operationId: accounts_update_profile_update
+      description: ViewSet for handling user operations.
       tags:
       - accounts
       requestBody:
@@ -866,6 +868,19 @@ components:
       - id
       - name
       - updated_at
+    ChangePassword:
+      type: object
+      properties:
+        old_password:
+          type: string
+        new_password:
+          type: string
+        new_password2:
+          type: string
+      required:
+      - new_password
+      - new_password2
+      - old_password
     CustomTokenObtainPair:
       type: object
       properties:
@@ -896,12 +911,18 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
         status:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
           readOnly: true
         shipping_address:
           type: string
         created_at:
+          type: string
+          format: date
+          readOnly: true
+        updated_at:
           type: string
           format: date
           readOnly: true
@@ -912,6 +933,7 @@ components:
       - shipping_address
       - status
       - total_amount
+      - updated_at
       - user
     OrderCreate:
       type: object
@@ -920,8 +942,7 @@ components:
           type: array
           items:
             type: object
-            additionalProperties:
-              type: integer
+            additionalProperties: {}
           writeOnly: true
         shipping_address:
           type: string
@@ -934,7 +955,7 @@ components:
         id:
           type: integer
           readOnly: true
-        product:
+        Products:
           allOf:
           - $ref: '#/components/schemas/Product'
           readOnly: true
@@ -949,15 +970,16 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
         created_at:
           type: string
           format: date
           readOnly: true
       required:
+      - Products
       - created_at
       - id
       - price
-      - product
       - product_id
       - quantity
     PatchedOrder:
@@ -978,12 +1000,18 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
         status:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
           readOnly: true
         shipping_address:
           type: string
         created_at:
+          type: string
+          format: date
+          readOnly: true
+        updated_at:
           type: string
           format: date
           readOnly: true
@@ -1014,12 +1042,6 @@ components:
           maxLength: 15
         address:
           type: string
-        is_active:
-          type: boolean
-          readOnly: true
-          title: Active
-          description: Designates whether this user should be treated as active. Unselect
-            this instead of deleting accounts.
     Product:
       type: object
       properties:
@@ -1119,6 +1141,20 @@ components:
       - product
       - updated_at
       - user
+    StatusEnum:
+      enum:
+      - pending
+      - processing
+      - shipped
+      - delivered
+      - cancelled
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `processing` - Processing
+        * `shipped` - Shipped
+        * `delivered` - Delivered
+        * `cancelled` - Cancelled
     TokenRefresh:
       type: object
       properties:
@@ -1157,16 +1193,9 @@ components:
           maxLength: 15
         address:
           type: string
-        is_active:
-          type: boolean
-          readOnly: true
-          title: Active
-          description: Designates whether this user should be treated as active. Unselect
-            this instead of deleting accounts.
       required:
       - email
       - id
-      - is_active
       - username
     UserCreate:
       type: object

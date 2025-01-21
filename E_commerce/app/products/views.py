@@ -18,7 +18,7 @@ from .premission import IsAdminUser
 class CategoryCreateListAPIView(generics.ListCreateAPIView):
     queryset = Categories.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 categories_list = CategoryCreateListAPIView.as_view()
 
@@ -49,7 +49,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
         if self.request.method == 'POST':
             self.permission_classes = [IsAuthenticated, IsAdminUser]
         if self.request.method == 'GET':
-            self.permission_classes = [AllowAny]
+            self.permission_classes = [IsAuthenticated]
         return super().get_permissions()
 
 product_list_create_view = ProductListCreateAPIView.as_view()
